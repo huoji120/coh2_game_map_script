@@ -1,0 +1,110 @@
+function ChangeCamera()
+	local distMin = 3
+	local distMax = 75
+
+	Camera_SetTuningValue(TV_DistMin, distMin)
+	Camera_SetTuningValue(TV_DistMax, distMax)
+	Camera_SetZoomDist(distMax)
+end
+function check_is_ai_entity(player)
+	local playerId = Player_GetID(player)
+	local is_ai = Player_IsHuman(player) == false
+	local is_attacker = playerId == 1004 or playerId == 1005 or playerId == 1006 or playerId == 1007
+	return is_ai and is_attacker
+end
+
+function Modify_WeaponDamage(groupid, hardpoint, factor)
+	-- create the appropriate modifier
+	local modifier =
+		Modifier_Create(MAT_Weapon, "modifiers\\damage_weapon_modifier.lua", MUT_Multiplication, false, factor, hardpoint)
+	local _ApplyModifierToSquad = function(gid, idx, sid)
+		if Squad_IsValid(Squad_GetGameID(sid)) and Squad_Count(sid) > 0 then
+			Modifier_ApplyToSquad(modifier, sid)
+		end
+	end
+	SGroup_ForEachEx(groupid, _ApplyModifierToSquad, true, true)
+end
+function SGroup_CreateIfNotFound(sg)
+	if not SGroup_Exists(sg) then
+		return SGroup_Create(sg)
+	else
+		return SGroup_FromName(sg)
+	end
+end
+function Squad_GetTempSGroup(squad, name)
+	local sg_squadtemp = SGroup_CreateIfNotFound(name)
+	SGroup_Clear(sg_squadtemp)
+	SGroup_Add(sg_squadtemp, squad)
+	return sg_squadtemp
+end
+function Squad_GetText(squad)
+	return BP_GetName(Squad_GetBlueprint(squad)) .. " - " .. Squad_GetGameID(squad) .. " "
+end
+local add_squad = {}
+function IntervalChangeWeaponDamage()
+	for index = 0, World_GetNumEntities() - 1 do
+		local entity = World_GetEntity(index)
+		if entity ~= nil then
+			local squad = Entity_GetSquad(entity)
+			if squad ~= nil then
+				local sqOwner = Squad_GetPlayerOwner(squad)
+
+				if sqOwner ~= nil then
+					local squad_text = Squad_GetText(squad)
+					local squad_id = Squad_GetGameID(squad)
+					local found_added = add_squad[squad_id]
+					if found_added == nil then
+						add_squad[squad_id] = true
+						if
+							string.find(squad_text, "anti_tank") == nil and string.find(squad_text, "antitank") == nil and
+								string.find(squad_text, "at_gun") == nil
+						 then
+							Modify_WeaponDamage(Squad_GetTempSGroup(squad, "sg_squadtemp_reinforce"), "hardpoint_01", 3, "sgroup")
+						else
+							Modify_WeaponDamage(Squad_GetTempSGroup(squad, "sg_squadtemp_reinforce"), "hardpoint_01", 0.8, "sgroup")
+						end
+					end
+				end
+			end
+		end
+	end
+end
+function AiResourceBoost()
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then
+			--Player_SetResource(player, RT_Fuel, Player_GetResource(player, RT_Fuel) + 60)
+			Player_SetResource(player, RT_Manpower, Player_GetResource(player, RT_Manpower) + 220)
+			Player_SetResource(player, RT_Munition, Player_GetResource(player, RT_Munition) + 220)
+		end
+	end
+end
+function playerModify()
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) == false then
+			Modify_PlayerProductionRate(player, 1.5)
+			Modify_PlayerResourceRate(player, RT_Manpower, 1.5)
+		--Player_SetResource(player, RT_Manpower, Player_GetResource(player, RT_Manpower) + 600)
+		end
+	end
+	ChangeCamera()
+end
+function OnInitID()
+	-- [[ Markers ]]
+	mkr_1 = Marker_FromName("mkr_1", "Enemy Spawn")
+	mkr_2 = Marker_FromName("mkr_2", "Ally Spawn")
+	Rule_AddInterval(IntervalChangeWeaponDamage, 20)
+	Rule_AddInterval(AiResourceBoost, 30)
+	Rule_AddOneShot(playerModify, 5)
+
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then
+			Modify_PlayerProductionRate(player, 2.5)
+		end
+	end
+	-- [[ Squad Groups ]]
+
+	-- [[ Entity Groups ]]
+end

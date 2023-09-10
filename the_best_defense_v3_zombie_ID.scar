@@ -1,0 +1,118 @@
+mkr_3 = nil
+
+function SGroup_CreateIfNotFound(sg)
+	if not SGroup_Exists(sg) then
+		return SGroup_Create(sg)
+	else
+		return SGroup_FromName(sg)
+	end
+end
+
+function Squad_GetTempSGroup(squad, name)
+	local sg_squadtemp = SGroup_CreateIfNotFound(name)
+	SGroup_Clear(sg_squadtemp)
+	SGroup_Add(sg_squadtemp, squad)
+	return sg_squadtemp
+end
+
+function check_is_ai_entity(player)
+	local playerId = Player_GetID(player)
+	local is_ai = Player_IsHuman(player) == false
+	local is_attacker = playerId == 1004 or playerId == 1005 or playerId == 1006 or playerId == 1007
+	return is_ai and is_attacker
+end
+
+function clean_sq(player)
+	local max_pop = Player_GetMaxPopulation(player, CT_Personnel)
+
+	for index = 0, World_GetNumEntities() - 1 do
+		local entity = World_GetEntity(index)
+		if entity ~= nil then
+			local squad = Entity_GetSquad(entity)
+			if squad ~= nil then
+				local sqOwner = Squad_GetPlayerOwner(squad)
+				if sqOwner ~= nil and sqOwner == player then
+					Squad_Kill(squad)
+					local cur_pop = Player_GetCurrentPopulation(player, CT_Personnel)
+					if cur_pop < max_pop then
+						return
+					end
+				end
+			end
+		end
+	end
+end
+function pc_guard()
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then
+			local cur_pop = Player_GetCurrentPopulation(player, CT_Personnel)
+			local max_pop = Player_GetMaxPopulation(player, CT_Personnel)
+			if cur_pop > max_pop * 2 then
+				clean_sq(player)
+			end
+		end
+	end
+end
+function pc_guard_start()
+	-- body
+	pc_guard()
+	Rule_AddInterval(pc_guard, 180) --3分钟一次
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then
+			AI_Enable(player, false)
+		end
+	end
+end
+function Interval()
+	for index = 0, World_GetNumEntities() - 1 do
+		local entity = World_GetEntity(index)
+		if entity ~= nil then
+			local squad = Entity_GetSquad(entity)
+			if squad ~= nil then
+				local sqOwner = Squad_GetPlayerOwner(squad)
+				if sqOwner ~= nil and check_is_ai_entity(sqOwner) then
+					Command_SquadPos(
+						sqOwner,
+						Squad_GetTempSGroup(squad, "sg_squadtemp_reinforce"),
+						SCMD_Move,
+						Marker_GetPosition(mkr_3),
+						false
+					)
+				end
+			end
+		end
+	end
+end
+function ChangeCamera()
+	local distMin = 3
+	local distMax = 80
+
+	Camera_SetTuningValue(TV_DistMin, distMin)
+	Camera_SetTuningValue(TV_DistMax, distMax)
+	Camera_SetZoomDist(distMax)
+end
+function playerModify()
+	ChangeCamera()
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then
+			AI_Enable(player, false)
+		--AI_SetDifficulty(player, AD_Hardest)
+		end
+	end
+end
+function OnInitID()
+	-- [[ Markers ]]
+	mkr_1 = Marker_FromName("mkr_1", "Enemy Spawn")
+	mkr_2 = Marker_FromName("mkr_2", "Ally Spawn")
+	mkr_3 = mkr_2
+
+	Rule_AddInterval(Interval, 20)
+	Rule_AddOneShot(pc_guard_start, 1800) --30分钟
+	Rule_AddOneShot(playerModify, 10)
+	-- [[ Squad Groups ]]
+
+	-- [[ Entity Groups ]]
+end

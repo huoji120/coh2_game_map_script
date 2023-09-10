@@ -1,0 +1,223 @@
+g_mkr_1 = ""
+g_mkr_2 = ""
+g_super_ai_rush = false
+function check_is_ai_entity(player)
+	local playerId = Player_GetID(player)
+	--local is_ai = Player_IsHuman(player) == false
+	local is_ai = true
+	local is_attacker = playerId == 1004 or playerId == 1005 or playerId == 1006 or playerId == 1007
+	return is_ai and is_attacker
+end
+function SpwanTigerKingAtPos(player, pos)
+	local ebp = BP_GetSquadBlueprint("king_tiger_squad_mp")
+	Squad_CreateAndSpawnToward(ebp, player, 0, pos, pos)
+end
+function SpwanSdkfzAtPos(player, pos)
+	local ebp = BP_GetSquadBlueprint("sdkfz_251_wurfrahmen_40_halftrack_squad_mp")
+	Squad_CreateAndSpawnToward(ebp, player, 0, pos, pos)
+end
+function SpwanT3476AtPos(player, pos)
+	local ebp = BP_GetSquadBlueprint("t_34_76_squad_mp")
+	Squad_CreateAndSpawnToward(ebp, player, 0, pos, pos)
+end
+function SpwanleIg18InfSupportGunMpAtPos(player, pos)
+	local ebp = BP_GetSquadBlueprint("le_ig_18_inf_support_gun_squad_mp")
+	Squad_CreateAndSpawnToward(ebp, player, 0, pos, pos)
+end
+
+function SGroup_CreateIfNotFound(sg)
+	if not SGroup_Exists(sg) then
+		return SGroup_Create(sg)
+	else
+		return SGroup_FromName(sg)
+	end
+end
+function Squad_GetTempSGroup(squad, name)
+	local sg_squadtemp = SGroup_CreateIfNotFound(name)
+	SGroup_Clear(sg_squadtemp)
+	SGroup_Add(sg_squadtemp, squad)
+	return sg_squadtemp
+end
+function AiRush()
+	for index = 0, World_GetNumEntities() - 1 do
+		local entity = World_GetEntity(index)
+		if entity ~= nil then
+			local squad = Entity_GetSquad(entity)
+			if squad ~= nil then
+				local sqOwner = Squad_GetPlayerOwner(squad)
+				if sqOwner ~= nil and check_is_ai_entity(sqOwner) then
+					Command_SquadPos(
+						sqOwner,
+						Squad_GetTempSGroup(squad, "sg_squadtemp_reinforce"),
+						SCMD_Move,
+						Marker_GetPosition(g_mkr_2),
+						false
+					)
+				end
+			end
+		end
+	end
+end
+function DisOrEnableAi(isEnable)
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then
+			AI_Enable(player, isEnable)
+		end
+	end
+end
+function DelayEnableAi()
+	if g_super_ai_rush == true then
+		return
+	end
+	DisOrEnableAi(true)
+end
+function AiRush_Spwan()
+	-- xd
+	local isSpwanSuccess = true
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then -- 检查玩家是否是AI
+			local cur_pop = Player_GetCurrentPopulation(player, CT_Personnel)
+			local max_pop = Player_GetMaxPopulation(player, CT_Personnel)
+			local pos = Marker_GetPosition(g_mkr_1)
+			if cur_pop < max_pop then
+				isSpwanSuccess = true
+				for i = 1, 5 do
+					SpwanT3476AtPos(player, pos)
+				end
+				for i = 1, 9 do
+					SpwanTigerKingAtPos(player, pos)
+				end
+			end
+		end
+	end
+	return isSpwanSuccess
+end
+function AddTankeForAi()
+	AiRush_Spwan()
+	AiRush()
+end
+function MakeAiRush()
+	if g_super_ai_rush == true then
+		return
+	end
+	local isSpwanSuccess = AiRush_Spwan()
+
+	if isSpwanSuccess == true then
+		DisOrEnableAi(false)
+		AiRush()
+		Rule_AddOneShot(AiRush, 30)
+		Rule_AddOneShot(AddTankeForAi, 100)
+		Rule_AddOneShot(DelayEnableAi, 180)
+	end
+end
+function SpwanSomeThingToAi()
+	if g_super_ai_rush == true then
+		return
+	end
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then -- 检查玩家是否是AI
+			local cur_pop = Player_GetCurrentPopulation(player, CT_Personnel)
+			local max_pop = Player_GetMaxPopulation(player, CT_Personnel)
+			local pos = Marker_GetPosition(g_mkr_1)
+			if cur_pop < max_pop then
+				SpwanleIg18InfSupportGunMpAtPos(player, pos)
+				for i = 1, 2 do
+					SpwanSdkfzAtPos(player, pos)
+				end
+				for i = 1, 3 do
+					SpwanT3476AtPos(player, pos)
+				end
+				for i = 1, 3 do
+					SpwanTigerKingAtPos(player, pos)
+				end
+			end
+		end
+	end
+end
+
+function superAiRush_Spwan()
+	if g_super_ai_rush == false then
+		return
+	end
+	AiRush_Spwan()
+	--AiRush()
+end
+function superAiRush_DelayEnableAi()
+	DisOrEnableAi(true)
+end
+function superAiRush()
+	g_super_ai_rush = true
+	--DisOrEnableAi(false)
+	Rule_AddInterval(superAiRush_Spwan, 20)
+	superAiRush_Spwan()
+	--为了防止无聊的事情发生...
+	--Rule_AddOneShot(superAiRush_DelayEnableAi, 300)
+end
+
+function GodAi()
+	Rule_AddInterval(SpwanSomeThingToAi, 120)
+	--只冲一次
+	Rule_AddOneShot(MakeAiRush, 480)
+	SpwanSomeThingToAi()
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then -- 检查玩家是否是AI
+			local max_pop = Player_GetMaxPopulation(player, CT_Personnel)
+			Player_SetPopCapOverride(player, max_pop + 60)
+			Modify_PlayerProductionRate(player, 1000)
+			Player_SetResource(player, RT_Manpower, 1000000)
+			Player_SetResource(player, RT_Fuel, 1000000)
+		else
+			Modify_PlayerProductionRate(player, 1.2)
+			Player_SetResource(player, RT_Fuel, Player_GetResource(player, RT_Fuel) + 400)
+			Player_SetResource(player, RT_Manpower, Player_GetResource(player, RT_Manpower) + 400)
+			Player_SetResource(player, RT_Munition, Player_GetResource(player, RT_Munition) + 200)
+			Modify_PlayerResourceRate(player, RT_Manpower, 1.3)
+		end
+	end
+end
+function ChangeCamera()
+	local distMin = 3
+	local distMax = 80
+
+	Camera_SetTuningValue(TV_DistMin, distMin)
+	Camera_SetTuningValue(TV_DistMax, distMax)
+	Camera_SetZoomDist(distMax)
+end
+function playerModify()
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) == false then
+			Modify_PlayerResourceRate(player, RT_Manpower, 1.2)
+			Modify_PlayerResourceRate(player, RT_Fuel, 1.1)
+			Modify_PlayerProductionRate(player, 1.5)
+			--Player_SetResource(player, RT_Fuel, Player_GetResource(player, RT_Fuel) + 1400)
+			--Player_SetResource(player, RT_Munition, Player_GetResource(player, RT_Munition) + 800)
+			Player_SetResource(player, RT_Manpower, Player_GetResource(player, RT_Manpower) + 600)
+		end
+	end
+	ChangeCamera()
+end
+function OnInitID()
+	-- [[ Markers ]]
+	g_mkr_1 = Marker_FromName("mkr_1", "Enemy Spawn")
+	g_mkr_2 = Marker_FromName("mkr_2", "Ally Spawn")
+	-- [[ Squad Groups ]]
+
+	-- [[ Entity Groups ]]
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then
+			Modify_PlayerProductionRate(player, 8)
+			Modify_PlayerResourceRate(player, RT_Manpower, 6)
+			Modify_PlayerResourceRate(player, RT_Fuel, 4)
+		end
+	end
+	Rule_AddOneShot(playerModify, 3)
+	Rule_AddOneShot(GodAi, 600)
+	-- 28min
+	Rule_AddOneShot(superAiRush, 1920)
+end

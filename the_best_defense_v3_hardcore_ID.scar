@@ -1,0 +1,300 @@
+_grenadier_squad = {squad = "grenadier_squad_mp"}
+_assault_grenadier_squad = {ability = "assault_grenadiers"}
+_hmg42_team = {squad = "mg42_heavy_machine_gun_squad_mp"}
+_mortar_team = {squad = "mortar_team_81mm_mp"}
+_officer_squad = {ability = "assault_field_officer"}
+_osttruppen_squad = {ability = "ostruppen"}
+_panzer_grenadier_squad = {squad = "panzer_grenadier_squad_mp"}
+_urban_assault_panzer_grenadier_squad = {ability = "urban_assault_grenadiers"}
+_pioneer_squad = {squad = "pioneer_squad_mp"}
+_sniper_squad = {squad = "sniper_squad_mp"}
+_stormtrooper_squad = {ability = "stormtroopers"}
+
+_pak40_at_gun_squad = {squad = "pak40_75mm_at_gun_squad_mp", isvehicle = true}
+_pak43_at_gun_squad = {ability = "pak_43_emplacement_unlock", entity = "pak43_88mm_at_gun_mp", isvehicle = true}
+_brummbar_squad = {squad = "brummbar_squad_mp", isvehicle = true}
+_elefant_squad = {ability = "elefant_unlock", isvehicle = true}
+_mechanized_250_halftrack_grenadiers_squad = {ability = "mechanized_grenadier_group", isvehicle = true}
+_mortar_250_halftrack_squad = {ability = "mortar_halftrack", isvehicle = true}
+_sdkfz_251_halftrack_squad = {squad = "sdkfz_251_halftrack_squad_mp", isvehicle = true}
+_le_fh18_howitzer_squad = {
+	ability = "howitzer_105mm_emplacement_unlock",
+	entity = "howitzer_105mm_le_fh18_mp",
+	isvehicle = true
+}
+_opel_blitz_supply_truck_squad = {ability = "supply_truck", isvehicle = true}
+_ostwind_squad = {squad = "ostwind_squad_mp", isvehicle = true}
+_panther_squad = {squad = "panther_squad_mp", isvehicle = true}
+_panzer_iv_squad = {squad = "panzer_iv_squad_mp", isvehicle = true}
+_panzer_iv_command_squad = {ability = "armor_commander", isvehicle = true}
+_panzerwerfer_squad = {squad = "panzerwerfer_squad_mp", isvehicle = true}
+_scoutcar_222_squad = {squad = "scoutcar_sdkfz222_mp", isvehicle = true}
+_stug_3_e_squad = {ability = "stug_iii_e", isvehicle = true}
+_stug_3_squad = {squad = "stug_iii_squad_mp", isvehicle = true}
+_tiger_ace_squad = {ability = "tiger_tank_ace", isvehicle = true}
+_tiger_squad = {ability = "tiger_tank", isvehicle = true}
+_puma_squad = {ability = "puma_dispatch", isvehicle = true}
+
+_combat_engineer_squad = {squad = "combat_engineer_squad_mp"}
+_conscript_squad = {squad = "conscript_squad_mp"}
+_dshk_38_hmg_squad = {ability = "dshk_mp"}
+_maxim_hmg_squad = {squad = "m1910_maxim_heavy_machine_gun_squad_mp"}
+_mortar_squad = {squad = "pm-82_41_mortar_squad_mp"}
+_mortar_120mm_squad = {ability = "cmd_120mm_mortar_crew"}
+_partisan_squad = {ability = "partisans_commander_anti_infantry"}
+_partisan_at_squad = {ability = "partisans_commander_anti_vehicle"}
+_sniper_squad = {squad = "sniper_team_mp"}
+_guards_troops_squad = {ability = "cmd_guard_troops"}
+_penal_battalion_squad = {squad = "penal_battalion_mp"}
+_shock_troop_squad = {ability = "cmd_shock_troops"}
+
+_is_2_squad = {ability = "cmd_is2_heavy_tank", isvehicle = true}
+_isu_152_squad = {ability = "cmd_isu-152", isvehicle = true}
+_katyusha_squad = {squad = "katyusha_bm-13n_squad_mp", isvehicle = true}
+_kv_1_squad = {ability = "cmd_kv-1_unlock", isvehicle = true}
+_kv_2_squad = {ability = "kv-2", isvehicle = true}
+_kv_8_squad = {ability = "cmd_kv-8_unlock_mp", isvehicle = true}
+_m3a1_squad = {squad = "m3a1_scout_car_squad_mp", isvehicle = true}
+_m5_squad = {squad = "m5_halftrack_squad_mp", isvehicle = true}
+_howitzer_203mm_squad = {ability = "b4_203mm_howitzer", entity = "artillery_203mm_b4", isvehicle = true}
+_howitzer_152mm_squad = {ability = "cmd_ml_20", entity = "m1937_152mm_ml_20_artillery_mp", isvehicle = true}
+_zis_3_at_gun_squad = {squad = "m1942_zis-3_76mm_at_gun_squad_mp", isvehicle = true}
+_k_45mm_at_gun_squad = {ability = "m-42_at_gun", isvehicle = true}
+_su_76_squad = {squad = "su-76m_mp", isvehicle = true}
+_su_85_squad = {squad = "su-85_mp", isvehicle = true}
+_t_34_squad = {squad = "t_34_76_squad_mp", isvehicle = true}
+_t_34_85_squad = {ability = "cmd_t34_85_medium_tank", isvehicle = true}
+_t_34_85_one_squad = {ability = "cmd_advanced_t34_85_medium_tank", isvehicle = true}
+_t_70_squad = {squad = "t-70m_mp", isvehicle = true}
+_m4c_sherman_squad = {ability = "sherman_soviet_dispatch", isvehicle = true}
+
+-- List of units in a table
+_unitList = {
+	_panzer_iv_command_squad,
+	_dshk_38_hmg_squad,
+	_conscript_squad,
+	_sdkfz_251_halftrack_squad,
+	_stormtrooper_squad,
+	_tiger_ace_squad,
+	_t_70_squad,
+	_partisan_at_squad,
+	_tiger_squad,
+	_t_34_85_squad,
+	_kv_2_squad,
+	_mortar_squad,
+	_penal_battalion_squad,
+	_le_fh18_howitzer_squad,
+	_su_76_squad,
+	_sniper_squad,
+	_m5_squad,
+	_zis_3_at_gun_squad,
+	_isu_152_squad,
+	_is_2_squad,
+	_mortar_team,
+	_pak43_at_gun_squad,
+	_howitzer_203mm_squad,
+	_osttruppen_squad,
+	_maxim_hmg_squad,
+	_k_45mm_at_gun_squad,
+	_grenadier_squad,
+	_brummbar_squad,
+	_combat_engineer_squad,
+	_panzer_grenadier_squad,
+	_assault_grenadier_squad,
+	_officer_squad,
+	_howitzer_152mm_squad,
+	_t_34_squad,
+	_katyusha_squad,
+	_kv_1_squad,
+	_scoutcar_222_squad,
+	_kv_8_squad,
+	_pioneer_squad,
+	_su_85_squad,
+	_pak40_at_gun_squad,
+	_t_34_85_one_squad,
+	_elefant_squad,
+	_partisan_squad,
+	_guards_troops_squad,
+	_mortar_120mm_squad,
+	_m3a1_squad,
+	_stug_3_squad,
+	_stug_3_e_squad,
+	_panzerwerfer_squad,
+	_panzer_iv_squad,
+	_shock_troop_squad,
+	_ostwind_squad,
+	_opel_blitz_supply_truck_squad,
+	_mortar_250_halftrack_squad,
+	_mechanized_250_halftrack_grenadiers_squad,
+	_hmg42_team,
+	_panther_squad,
+	_urban_assault_panzer_grenadier_squad
+}
+g_mkr_1 = ""
+function Modify_PlayerProductionRate(player, factor)
+	local modifier =
+		Modifier_Create(MAT_Player, "modifiers\\production_speed_player_modifier.lua", MUT_Multiplication, false, factor, "")
+	return Modifier_ApplyToPlayer(modifier, player)
+end
+
+function Modify_AbilityRechargeTime(playerid, abilityid, factor)
+	local modifier =
+		Modifier_Create(
+		MAT_Ability,
+		"modifiers\\ability_recharge_time_modifier.lua",
+		MUT_Multiplication,
+		false,
+		factor,
+		abilityid
+	)
+	return {Modifier_ApplyToPlayer(modifier, playerid)}
+end
+
+function Unlock(player, item, the_type, unlock_ability)
+	if item.squad then
+		Player_SetSquadProductionAvailabilityInternal(
+			player,
+			BP_GetSquadBlueprint(item.squad),
+			the_type,
+			LOC("human only can use infantry")
+		)
+	end
+	if item.entity then
+		Player_SetEntityProductionAvailabilityInternal(
+			player,
+			BP_GetEntityBlueprint(item.entity),
+			the_type,
+			LOC("human only can use infantry")
+		)
+	end
+	if unlock_ability then
+		if item.ability then
+			Player_SetAbilityAvailabilityInternal(player, BP_GetAbilityBlueprint(item.ability), the_type, LOC("reason 1"))
+		end
+	end
+end
+function clean_sq(player)
+	for index = 0, World_GetNumEntities() - 1 do
+		local entity = World_GetEntity(index)
+		if entity ~= nil then
+			local squad = Entity_GetSquad(entity)
+			if squad ~= nil then
+				local sqOwner = Squad_GetPlayerOwner(squad)
+				if sqOwner ~= nil and sqOwner == player then
+					Squad_Kill(squad)
+				end
+			end
+		end
+	end
+end
+
+function check_is_ai_entity(player)
+	local playerId = Player_GetID(player)
+	local is_ai = Player_IsHuman(player) == false
+	local is_attacker = playerId == 1004 or playerId == 1005 or playerId == 1006 or playerId == 1007
+	return is_ai and is_attacker
+end
+
+function Interval()
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then -- 检查玩家是否是AI
+			--Modify_PlayerProductionRate(player, 1000) --打开瞬间生产
+			Player_SetResource(player, RT_Fuel, Player_GetResource(player, RT_Fuel) + 600)
+			Player_SetResource(player, RT_Manpower, Player_GetResource(player, RT_Manpower) + 600)
+		end
+	end
+end
+
+--sdkfz_251_wurfrahmen_40_halftrack_squad_mp
+function SpwanTigerKingAtPos(player, pos)
+	local ebp = BP_GetSquadBlueprint("king_tiger_squad_mp")
+	Squad_CreateAndSpawnToward(ebp, player, 0, pos, pos)
+end
+function SpwanSdkfzAtPos(player, pos)
+	local ebp = BP_GetSquadBlueprint("sdkfz_251_wurfrahmen_40_halftrack_squad_mp")
+	Squad_CreateAndSpawnToward(ebp, player, 0, pos, pos)
+end
+g_first = false
+function SpwanSomeThingToAi()
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then -- 检查玩家是否是AI
+			local cur_pop = Player_GetCurrentPopulation(player, CT_Personnel)
+			local max_pop = Player_GetMaxPopulation(player, CT_Personnel)
+			local pos = Marker_GetPosition(g_mkr_1)
+			if cur_pop < max_pop then
+				for i = 1, 5 do
+					SpwanTigerKingAtPos(player, pos)
+				end
+				SpwanSdkfzAtPos(player, pos)
+				if g_first == false then
+					g_first = true
+					for i = 1, 4 do
+						SpwanSdkfzAtPos(player, pos)
+					end
+				else
+					if cur_pop <= max_pop - 50 then
+						for i = 1, 2 do
+							SpwanSdkfzAtPos(player, pos)
+						end
+					end
+				end
+			end
+		end
+	end
+end
+function GodAi()
+	Rule_AddInterval(SpwanSomeThingToAi, 360) --4 min
+
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then -- 检查玩家是否是AI
+			local max_pop = Player_GetMaxPopulation(player, CT_Personnel)
+			Player_SetPopCapOverride(player, max_pop + 50) --100太恐怖了
+			Player_SetResource(player, RT_Fuel, 1000000)
+			Player_SetResource(player, RT_Manpower, 1000000)
+			Modify_PlayerProductionRate(player, 1000)
+		else
+			Modify_PlayerProductionRate(player, 1.5) --玩家生产加成
+			Player_SetResource(player, RT_Fuel, Player_GetResource(player, RT_Fuel) + 400)
+			Player_SetResource(player, RT_Manpower, Player_GetResource(player, RT_Manpower) + 400)
+		end
+	end
+end
+function ChangeCamera()
+	local distMin = 3
+	local distMax = 75
+
+	Camera_SetTuningValue(TV_DistMin, distMin)
+	Camera_SetTuningValue(TV_DistMax, distMax)
+	Camera_SetZoomDist(distMax)
+end
+function block_player_item()
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) == false then
+			Modify_PlayerProductionRate(player, 1.5)
+		end
+	end
+	ChangeCamera()
+end
+
+function OnInitID()
+	--SpwanTigerKing()
+	g_mkr_1 = Marker_FromName("mkr_1", "Enemy Spawn")
+	mkr_2 = Marker_FromName("mkr_2", "Ally Spawn")
+	Rule_AddInterval(Interval, 60)
+	Rule_AddOneShot(GodAi, 1320) --22分钟
+	Rule_AddOneShot(block_player_item, 5) --20分钟
+	for i = 1, World_GetPlayerCount() do
+		local player = World_GetPlayerAt(i)
+		if check_is_ai_entity(player) then
+			Modify_PlayerProductionRate(player, 3)
+		end
+	end
+
+	-- [[ Markers ]]
+	-- [[ Squad Groups ]]
+	-- [[ Entity Groups ]]
+end
